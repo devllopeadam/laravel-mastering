@@ -1,16 +1,14 @@
 <?php
 
-namespace Database\Seeders;
-
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-class DatabaseSeeder extends Seeder
+return new class extends Migration
 {
     /**
-     * Seed the application's database.
+     * Run the migrations.
      */
     public function run(): void
     {
@@ -26,13 +24,7 @@ class DatabaseSeeder extends Seeder
         // Seed Acteurs
         DB::table('acteur')->insert([
             ['nom' => 'DiCaprio', 'prenom' => 'Leonardo', 'pay' => 'USA', 'date_naissance' => '1974-11-11', 'tele' => '1234567890'],
-            [
-                'nom' => 'Hardy',
-                'prenom' => 'Tom',
-                'pay' => 'UK',
-                'date_naissance' => '1977-09-15',
-                'tele' => '1234567891'
-            ],
+            ['nom' => 'Hardy', 'prenom' => 'Tom', 'pay' => 'UK', 'date_naissance' => '1977-09-15', 'tele' => '1234567891'],
             ['nom' => 'Bale', 'prenom' => 'Christian', 'pay' => 'UK', 'date_naissance' => '1974-01-30', 'tele' => '1234567892'],
             ['nom' => 'Cotillard', 'prenom' => 'Marion', 'pay' => 'France', 'date_naissance' => '1975-09-30', 'tele' => '1234567893'],
             ['nom' => 'McConaughey', 'prenom' => 'Matthew', 'pay' => 'USA', 'date_naissance' => '1969-11-04', 'tele' => '1234567894'],
@@ -40,31 +32,19 @@ class DatabaseSeeder extends Seeder
 
         // Seed Participation
         DB::table('participation')->insert([
-            [
-                'acteur_id' => 1,
-                'film_id' => 1,
-                'role' => 'Dom Cobb'
-            ],
-            [
-                'acteur_id' => 1,
-                'film_id' => 2,
-                'role' => 'Jack Dawson'
-            ],
-            [
-                'acteur_id' => 3,
-                'film_id' => 3,
-                'role' => 'Bruce Wayne'
-            ],
-            [
-                'acteur_id' => 4,
-                'film_id' => 1,
-                'role' => 'Mal Cobb'
-            ],
-            [
-                'acteur_id' => 5,
-                'film_id' => 4,
-                'role' => 'Cooper'
-            ],
+            ['acteur_id' => 1, 'film_id' => 1, 'role' => 'Dom Cobb'],
+            ['acteur_id' => 1, 'film_id' => 2, 'role' => 'Jack Dawson'],
+            ['acteur_id' => 3, 'film_id' => 3, 'role' => 'Bruce Wayne'],
+            ['acteur_id' => 4, 'film_id' => 1, 'role' => 'Mal Cobb'],
+            ['acteur_id' => 5, 'film_id' => 4, 'role' => 'Cooper'],
         ]);
     }
-}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('participations');
+    }
+};

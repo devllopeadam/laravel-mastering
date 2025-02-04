@@ -6,44 +6,101 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-    public function getName($name)
-    {
-        return response()->json([
-            'data' => ['name' => $name]
-        ]);
-    }
+    // public function getName($name)
+    // {
+    //     return response()->json([
+    //         'data' => ['name' => $name]
+    //     ]);
+    // }
 
-    public function sayHello($name)
-    {
-        return view("sayHello", ['name' => $name]);
-    }
+    // public function sayHello($name)
+    // {
+    //     return view("sayHello", ['name' => $name]);
+    // }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6'
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users,email',
+    //         'password' => 'required|string|min:6'
+    //     ]);
 
-        var_dump($validator->errors());
-        die();
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+    //     var_dump($validator->errors());
+    //     die();
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
+
+    //     $user = User::create([
+    //         'name' => $request->input('name'),
+    //         'email' => $request->input('email'),
+    //         'password' => Hash::make($request->input('password'))
+    //     ]);
+
+    //     return response()->json([
+    //         'message' => 'User created successfully',
+    //         'user' => $user
+    //     ], 201);
+    // }
+    // public function register(Request $request)
+    // {
+    //     // $validation = $request->validate([
+    //     //     "name" => "required|string|min:5",
+    //     //     "email" => "required|email|unique:users",
+    //     //     "password" => "required|min:6"
+    //     // ]);
+    //     // var_dump($validation);
+    //     // die;
+    //     $newUser = User::create($request->all());
+    //     return response()->json(["message" => "User Created succefully", "user" => $newUser]);
+    // }
+
+    // public function login(Request $request)
+    // {
+    //     // $credentials = $request->only('email', 'password');
+
+    //     // if (!$token = JWTAuth::attempt($credentials)) {
+    //     //     return response()->json(['message' => 'Invalid email or password'], 401);
+    //     // }
+
+    //     // return response()->json([
+    //     //     'message' => 'User Logged in',
+    //     //     'user' => auth()->user(),
+    //     //     'token' => $token
+    //     // ]);
+    // }
+
+
+    public function showUsers(Request $request)
+    {
+        $users = [
+            [
+                "id" => 1,
+                "name" => "John Doe",
+                "email" => "john@gmail.com"
+            ],
+            [
+                "id" => 2,
+                "name" => "Jane Doe",
+                "email" => "jane@gmail.com"
+            ],
+        ];
+
+        $userId = $request->input("id"); //? id =  1
+
+        $userWithId = array_values(array_filter($users, function ($user) use ($userId) {
+            return $user['id'] == $userId;
+        }))[0] ?? null;
+
+        if (!$userWithId) {
+            return "User not found";
         }
 
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password'))
-        ]);
-
-        return response()->json([
-            'message' => 'User created successfully',
-            'user' => $user
-        ], 201);
+        return view("users", ["user" => $userWithId]);
     }
 }

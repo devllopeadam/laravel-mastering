@@ -38,10 +38,14 @@ Route::delete('auth', function () {
 
 Route::post("createUser", UserController::class . "@store");
 
-
-Route::post("posts", [PostController::class, "store"]);
-
+Route::post("posts", [PostController::class, "store"])->middleware("auth:api");
 
 Route::get("posts", [PostController::class, "getPosts"]);
 
+Route::get("posts/count", [PostController::class, "countPosts"]);
+
 Route::get("posts/{id}", [PostController::class, "getPostById"]);
+
+Route::post("register", [UserController::class, "register"]);
+
+Route::post("login", [UserController::class, "login"]);
