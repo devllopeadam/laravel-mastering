@@ -1,0 +1,9 @@
+suite TP gestion des commandes
+Objectif: créer un système d'authentification personnalisé
+
+1- ajouter une migration pour la table comptes: id,login,mot_passe,profil
+3- ajouter les vues: connexion, inscription et profil.
+utiliser les variables de sessions pour sauvegarder les données de l'utilisateur connecté.
+4- l'accès aux routes dépond du profil utilisateur connecté
+
+

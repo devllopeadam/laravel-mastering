@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthMiddleware
+class CompteMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,6 +15,15 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $user = session()->get("user");
+        if ($user && in_array($request->route()->getName(), ['login', 'register'])) {
+            return redirect()->route("profile");
+        }
+
+        if (!$user && in_array($request->route()->getName(), ['profile', 'logout'])) {
+            return redirect()->route('login');
+        }
+
         return $next($request);
     }
 }

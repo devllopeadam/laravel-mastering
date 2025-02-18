@@ -76,31 +76,4 @@ class UserController extends Controller
     // }
 
 
-    public function showUsers(Request $request)
-    {
-        $users = [
-            [
-                "id" => 1,
-                "name" => "John Doe",
-                "email" => "john@gmail.com"
-            ],
-            [
-                "id" => 2,
-                "name" => "Jane Doe",
-                "email" => "jane@gmail.com"
-            ],
-        ];
-
-        $userId = $request->input("id"); //? id =  1
-
-        $userWithId = array_values(array_filter($users, function ($user) use ($userId) {
-            return $user['id'] == $userId;
-        }))[0] ?? null;
-
-        if (!$userWithId) {
-            return "User not found";
-        }
-
-        return view("users", ["user" => $userWithId]);
-    }
 }
