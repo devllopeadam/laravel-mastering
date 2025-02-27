@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Compte as ModelsCompte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Compte extends Controller
 {
@@ -34,6 +35,11 @@ class Compte extends Controller
             return back()->withErrors(["login" => "User not found"])->withInput();
         }
         $request->session()->put("user", $compte);
+        Log::channel('custom')->warning('User logged in and stored in the session: ', [
+            'id' => $compte->id,
+            'login' => $request->login,
+            'profile' => $request->profile
+        ]); 
         return redirect()->route("profile");
     }
 

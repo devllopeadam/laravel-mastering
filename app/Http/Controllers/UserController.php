@@ -47,33 +47,38 @@ class UserController extends Controller
     //         'user' => $user
     //     ], 201);
     // }
-    // public function register(Request $request)
-    // {
-    //     // $validation = $request->validate([
-    //     //     "name" => "required|string|min:5",
-    //     //     "email" => "required|email|unique:users",
-    //     //     "password" => "required|min:6"
-    //     // ]);
-    //     // var_dump($validation);
-    //     // die;
-    //     $newUser = User::create($request->all());
-    //     return response()->json(["message" => "User Created succefully", "user" => $newUser]);
-    // }
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:5',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6'
+        ]);
 
-    // public function login(Request $request)
-    // {
-    //     // $credentials = $request->only('email', 'password');
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-    //     // if (!$token = JWTAuth::attempt($credentials)) {
-    //     //     return response()->json(['message' => 'Invalid email or password'], 401);
-    //     // }
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password'))
+        ]);
 
-    //     // return response()->json([
-    //     //     'message' => 'User Logged in',
-    //     //     'user' => auth()->user(),
-    //     //     'token' => $token
-    //     // ]);
-    // }
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user
+        ], 201);
+    }
 
+    public function login(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
 
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        return response()->json(['token' => $user->createToken('API Token')->plainTextToken]);
+    }
 }
