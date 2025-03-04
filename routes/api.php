@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +39,7 @@ Route::delete('auth', function () {
 
 Route::post("createUser", UserController::class . "@store");
 
-Route::post("posts", [PostController::class, "store"])->middleware("auth:api");
+Route::post("posts", [PostController::class, "store"]);
 
 Route::get("posts", [PostController::class, "getPosts"]);
 
@@ -49,3 +50,9 @@ Route::get("posts/{id}", [PostController::class, "getPostById"]);
 Route::post("register", [UserController::class, "register"]);
 
 Route::post("login", [UserController::class, "login"]);
+
+Route::delete("posts/{id}", [PostController::class, "delete"]);
+
+
+
+Route::apiResource('rooms', RoomController::class);

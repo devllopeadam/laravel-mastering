@@ -22,11 +22,7 @@ class PostController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
         // Eloquent ORM
-        $post = Post::create([
-            'title' => $request->input("title"),
-            'description' => $request->input("description"),
-            'thumbnail' => $request->input("thumbnail"),
-        ]);
+        $post = Post::create($request->all());
 
         return response()->json([
             'message' => 'Post created successfully',
