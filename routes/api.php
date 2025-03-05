@@ -4,10 +4,12 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TodoController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 
 Route::get('auth', function () {
@@ -49,3 +51,18 @@ Route::get("posts/{id}", [PostController::class, "getPostById"]);
 Route::post("register", [UserController::class, "register"]);
 
 Route::post("login", [UserController::class, "login"]);
+
+// Route::post("upload", [ImageUploader::class, "upload"]);
+
+
+// Route::get('rooms/search', [RoomController::class, 'search'])->middleware("auth:sanctum");
+
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('rooms', RoomController::class);
+// });
+
+
+Route::get("/todos", [TodoController::class, "index"]);
+Route::post("/todos", [TodoController::class, "store"]);
+Route::delete("/todos/{id}", [TodoController::class, "destroy"]);
+Route::put("/todos/{id}", [TodoController::class, "update"]);
